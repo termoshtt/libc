@@ -164,6 +164,7 @@ cfg_if! {
         pub const INT_MIN: c_int = -2147483648;
         pub const INT_MAX: c_int = 2147483647;
 
+        #[cfg(not(target_os = "cuda"))]
         extern {
             pub fn isalnum(c: c_int) -> c_int;
             pub fn isalpha(c: c_int) -> c_int;
@@ -284,7 +285,7 @@ cfg_if! {
 
         // These are all inline functions on android, so they end up just being entirely
         // missing on that platform.
-        #[cfg(not(target_os = "android"))]
+        #[cfg(all(not(target_os = "android"), not(target_os = "cuda")))]
         extern {
             pub fn abs(i: c_int) -> c_int;
             pub fn atof(s: *const c_char) -> c_double;

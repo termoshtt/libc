@@ -1241,6 +1241,9 @@ cfg_if! {
     } else if #[cfg(target_os = "android")] {
         mod android;
         pub use self::android::*;
+    } else if #[cfg(target_os = "cuda")] {
+        mod cuda;
+        pub use self::cuda::*;
     } else {
         // Unknown target_os
     }
