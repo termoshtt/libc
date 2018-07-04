@@ -293,6 +293,14 @@ cfg_if! {
             pub fn rand() -> c_int;
             pub fn srand(seed: c_uint);
         }
+
+        #[cfg(target_os = "cuda")]
+        extern {
+            pub fn malloc(size: size_t) -> *mut c_void;
+            pub fn free(p: *mut c_void);
+            pub fn memcpy(dest: *mut c_void, src: *const c_void, n: size_t) -> *mut c_void;
+            pub fn memset(dest: *mut c_void, c: c_int, n: size_t) -> *mut c_void;
+        }
     }
 }
 
