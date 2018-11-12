@@ -164,6 +164,7 @@ cfg_if! {
         pub const INT_MIN: c_int = -2147483648;
         pub const INT_MAX: c_int = 2147483647;
 
+        #[cfg(not(target_os = "cuda"))]
         extern {
             pub fn isalnum(c: c_int) -> c_int;
             pub fn isalpha(c: c_int) -> c_int;
@@ -284,13 +285,21 @@ cfg_if! {
 
         // These are all inline functions on android, so they end up just being entirely
         // missing on that platform.
-        #[cfg(not(target_os = "android"))]
+        #[cfg(all(not(target_os = "android"), not(target_os = "cuda")))]
         extern {
             pub fn abs(i: c_int) -> c_int;
             pub fn atof(s: *const c_char) -> c_double;
             pub fn labs(i: c_long) -> c_long;
             pub fn rand() -> c_int;
             pub fn srand(seed: c_uint);
+        }
+
+        #[cfg(target_os = "cuda")]
+        extern {
+            pub fn malloc(size: size_t) -> *mut c_void;
+            pub fn free(p: *mut c_void);
+            pub fn memcpy(dest: *mut c_void, src: *const c_void, n: size_t) -> *mut c_void;
+            pub fn memset(dest: *mut c_void, c: c_int, n: size_t) -> *mut c_void;
         }
     }
 }
